@@ -22,7 +22,7 @@ class MyUserManager(BaseUserManager):
         """
         Create and save a SuperUser with the given email and password and extra date.
         """
-        extra_fields.setdefault('in_staff', True)
+        extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
 
@@ -42,7 +42,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     # is_verified = models.CharField(default = False)
-    first_name = models.CharField(max_length=20)
+    
+    USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
     created_date = models.DateTimeField(auto_now_add=True)
