@@ -67,9 +67,10 @@ class Profile(models.Model):
     updated_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-       return self.user.email
+        return self.user.email
 
-@receiver(post_save,sender=User)
-def save_profile(sender,instance,created,**kwargs):
+
+@receiver(post_save, sender=User)
+def save_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
