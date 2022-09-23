@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views.generic.base import TemplateView, RedirectView
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, FormView
 from blog.models import *
+from .forms import PostForm
 
 # Create your views here.
 
@@ -52,3 +53,13 @@ class PostList(ListView):
 
 class PostDetailView(DetailView):
     model = Post
+
+
+class PostCreateView(FormView):
+    template_name = 'create-post.html'
+    form_class = PostForm
+    success_url = '/blog/post'
+
+    def form_valid(self,form):
+        form.save()
+        return super().form_valid(form)
