@@ -12,7 +12,10 @@
     <h1>blog posts:</h1>
     {% for post in object_list %}
     <div>
-        <h1>{{post.title}}</h1>
+        <a href="{% url 'blog:post-detail' pk=post.id %}">
+            <h1>{{post.id}} - {{post.title}}</h1>
+        </a>
+        <small>{{post.author}} - {{post.published_date}}</small>
         <p>{{post.content}}</p>
     </div>
     {% endfor %}

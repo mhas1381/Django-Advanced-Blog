@@ -9,6 +9,7 @@ urlpatterns = [
     # path('fbv-index', views.indexView, name='fbv-index'),
     path('cbv-index', views.IndexView.as_view(), name='cbv-index'),
     path('post/', views.PostList.as_view(), name='post-list'),
-    path('go-to-maktabkhooneh',
-         views.RedirectToMaktab.as_view(), name='go-to-maktabkhoone')
+    # path('go-to-maktabkhooneh',
+    #      views.RedirectToMaktab.as_view(), name='go-to-maktabkhoone')
+    path('post/<int:pk>/', views.PostDetailView.as_view(), name='post-detail')
 ]
