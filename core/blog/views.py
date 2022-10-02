@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic.base import TemplateView, RedirectView
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, DetailView, FormView, CreateView, UpdateView,DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.views.generic import ListView, DetailView, FormView, CreateView, UpdateView, DeleteView
 from blog.models import *
 from .forms import PostForm
 
@@ -41,7 +41,8 @@ class RedirectToMaktab(RedirectView):
     url = 'https://maktabkhooneh.org'
 
 
-class PostList(LoginRequiredMixin,ListView):
+class PostList(PermissionRequiredMixin, LoginRequiredMixin, ListView):
+    permission_required = 'blog.view_post'
     model = Post
     # queryset = Post.objects.all()
     context_object_name = 'posts'
@@ -52,7 +53,7 @@ class PostList(LoginRequiredMixin,ListView):
     #     return posts
 
 
-class PostDetailView(LoginRequiredMixin,DetailView):
+class PostDetailView(LoginRequiredMixin, DetailView):
     model = Post
 
 
@@ -68,7 +69,7 @@ class PostCreateView(FormView):
 '''
 
 
-class PostCreateView(LoginRequiredMixin,CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     fields = ['title', 'content',
               'status', 'category', 'published_date']
@@ -79,11 +80,12 @@ class PostCreateView(LoginRequiredMixin,CreateView):
         return super().form_valid(form)
 
 
-class PostEditView(LoginRequiredMixin,UpdateView):
+class PostEditView(LoginRequiredMixin, UpdateView):
     model = Post
     form_class = PostForm
     success_url = '/blog/post/'
 
-class PostDeleteView(LoginRequiredMixin,DeleteView):
+
+class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     success_url = '/blog/post'
