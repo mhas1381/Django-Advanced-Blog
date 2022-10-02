@@ -21,7 +21,7 @@
                 <h5>Delete</h5>
             </a>
         </a>
-        <small>{{post.author}} - {{post.published_date}}</small>
+        <small>{{post.author.first_name}} {{post.author.last_name}}- {{post.published_date}}</small>
         <p>{{post.content}}</p>
     </div>
     {% endfor %}
