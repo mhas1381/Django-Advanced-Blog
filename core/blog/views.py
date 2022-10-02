@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic.base import TemplateView, RedirectView
-from django.views.generic import ListView, DetailView, FormView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, FormView, CreateView, UpdateView,DeleteView
 from blog.models import *
 from .forms import PostForm
 
@@ -82,3 +82,7 @@ class PostEditView(UpdateView):
     model = Post
     form_class = PostForm
     success_url = '/blog/post/'
+
+class PostDeleteView(DeleteView):
+    model = Post
+    success_url = '/blog/post'
