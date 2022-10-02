@@ -12,5 +12,6 @@ urlpatterns = [
     # path('go-to-maktabkhooneh',
     #      views.RedirectToMaktab.as_view(), name='go-to-maktabkhoone')
     path('post/<int:pk>/', views.PostDetailView.as_view(), name='post-detail'),
-    path('post/create/',views.PostCreateView.as_view(), name='post-create')
+    path('post/create/',views.PostCreateView.as_view(), name='post-create'),
+    path('post/<int:pk>/edit/',views.PostEditView.as_view(),name='post-edit')
 ]
