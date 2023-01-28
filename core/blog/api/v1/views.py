@@ -8,7 +8,9 @@ from ...models import Post
 
 @api_view()
 def post_list(request):
-    return Response({"name": "Mohammad Hussein"})
+    posts = Post.objects.filter(status=1)
+    serializer = PostSerializer(posts , many = True)
+    return Response(serializer.data)
 
 
 @api_view()
