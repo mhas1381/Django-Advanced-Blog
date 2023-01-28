@@ -6,16 +6,22 @@ from django.shortcuts import get_object_or_404
 from ...models import Post
 
 
-@api_view()
+@api_view(["GET", "POST"])
 def post_list(request):
-    posts = Post.objects.filter(status=1)
-    serializer = PostSerializer(posts , many = True)
-    return Response(serializer.data)
+    if request.method == "GET":
+        posts = Post.objects.filter(status=1)
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
+    elif request.method == "POST":
+        serializer = PostSerializer(data = request.data)
+        serializer.is_valid(raise_exception = True)
+        serializer.save()
+        return Response(serializer.data)
 
 
 @api_view()
 def post_detail(request, id):
 
-    post = get_object_or_404(Post , pk=id)
+    post = get_object_or_404(Post, pk=id)
     serializer = PostSerializer(post)
     return Response(serializer.data)
