@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.views import APIView
 from rest_framework import status
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView,RetreiveUpdateDestroyAPIView
 from .serializers import PostSerializer
 from ...models import Post
 
@@ -67,7 +67,7 @@ class PostList(ListCreateAPIView):
     queryset = Post.objects.filter(status = True)
 
 
-class PostDetail(APIView):
+"""class PostDetail(APIView):
     ''' getting detail of the post ,edit and removing it'''
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = PostSerializer
@@ -90,4 +90,10 @@ class PostDetail(APIView):
         ''' deleting the post object'''
         post = get_object_or_404(Post, pk=id)
         post.delete()
-        return Response({'details': 'post removed succesfully'})
+        return Response({'details': 'post removed succesfully'})"""
+
+class PostDetail(RetreiveUpdateDestroyAPIView):
+    ''' getting detail of the post ,edit and removing it'''    
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = PostSerializer
+    queryset = Post.objects.filter(status = True)
