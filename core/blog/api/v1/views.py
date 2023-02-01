@@ -56,3 +56,28 @@ def post_detail(request, id):
     elif request.method == "DELETE":
         post.delete()
         return Response({'details':'post removed succesfully'})
+
+class PostDetail(APIView):
+    ''' getting detail of the post ,edit and removing it'''
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = PostSerializer
+    
+    def get(self,request,id):
+        ''' retriving the post data'''
+        post = get_object_or_404(Post , pk = id)
+        serializer = self.serializer_class(post)
+        return Response(serializer.data)
+
+    def put(self,request,id):
+        ''' editing the post data'''
+        post = get_object_or_404(Post , pk = id)
+        serializer = self.serializer_class(post)
+        serializer.is_valid(rasise_exception = True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def delete(self,request,id):
+        ''' deleting the post object'''
+        post = get_object_or_404(Post , pk = id)
+        post.delete()
+        return Response({'details':'post removed succesfully'})
