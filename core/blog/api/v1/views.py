@@ -3,8 +3,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.views import APIView
 from rest_framework import status
+from rest_framework.generics import ListCreateAPIView
 from .serializers import PostSerializer
-
 from ...models import Post
 
 
@@ -40,7 +40,7 @@ def post_detail(request, id):
         '''
 
 
-class PostList(APIView):
+"""class PostList(APIView):
     '''getting list of posts and creating post new posts'''
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = PostSerializer
@@ -58,6 +58,13 @@ class PostList(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+"""
+
+class PostList(ListCreateAPIView):
+    '''getting list of posts and creating post new posts'''
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = PostSerializer
+    queryset = Post.objects.filter(status = True)
 
 
 class PostDetail(APIView):
