@@ -3,7 +3,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.views import APIView
 from rest_framework import status
-from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework import viewsets
 from .serializers import PostSerializer
 from ...models import Post
 
@@ -60,11 +61,12 @@ def post_detail(request, id):
         return Response(serializer.data)
 """
 
+
 class PostList(ListCreateAPIView):
     '''getting list of posts and creating post new posts'''
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = PostSerializer
-    queryset = Post.objects.filter(status = True)
+    queryset = Post.objects.filter(status=True)
 
 
 """class PostDetail(APIView):
@@ -92,8 +94,38 @@ class PostList(ListCreateAPIView):
         post.delete()
         return Response({'details': 'post removed succesfully'})"""
 
+
 class PostDetail(RetrieveUpdateDestroyAPIView):
-    ''' getting detail of the post ,edit and removing it'''    
+    ''' getting detail of the post ,edit and removing it'''
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = PostSerializer
-    queryset = Post.objects.filter(status = True)
+    queryset = Post.objects.filter(status=True)
+
+
+class PostViewSet(viewsets.ViewSet):
+    ''' getting detail of the post ,edit and removing it'''
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = PostSerializer
+    queryset = Post.objects.filter(status=True)
+
+    def list(self,request):
+        serializer = self.serializer_class(self.queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self,request,pk=None):
+        post_object = get_object_or_404(self.queryset, pk=pk)
+        serializer = self.serializer_class(post_object)
+        return Response(serializer.data)
+    
+    def create(self, request):
+        pass
+
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
+
