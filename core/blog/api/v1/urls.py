@@ -5,7 +5,7 @@ from . import views
 app_name = 'api-v1'
 
 router = DefaultRouter()
-router.register('post', views.PostViewSet, basename='post')
+router.register('post', views.PostModelViewSet, basename='post')
 urlpatterns = router.urls
 # urlpatterns = [
 #     # path('post/',views.post_list,name='post-list'),
