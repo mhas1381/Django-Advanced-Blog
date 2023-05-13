@@ -5,8 +5,8 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import viewsets
-from .serializers import PostSerializer
-from ...models import Post
+from .serializers import PostSerializer,CategorySerializer
+from ...models import Post,Category
 
 
 '''
@@ -108,3 +108,8 @@ class PostModelViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
 
+class CategoryModelViewSet(viewsets.ModelViewSet):
+    ''' getting detail of the categories ,edit and removing it'''
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = CategorySerializer
+    queryset = Category.objects.all()
