@@ -7,9 +7,10 @@ from blog.models import Post,Category
 
 class PostSerializer(serializers.ModelSerializer):
     snippet = serializers.ReadOnlyField(source = 'get_snippet')
+    relative_url = serializers.URLField(source= 'get_absolute_api_url' , read_only=True)
     class Meta:
         model = Post
-        fields = ['id', 'author', 'image', 'title', 'content', 'snippet','status', 'published_date', ]
+        fields = ['id', 'author', 'image', 'title', 'content', 'snippet','relative_url','status', 'published_date', ]
 
 class CategorySerializer(serializers.ModelSerializer):
 
