@@ -6,6 +6,7 @@ from rest_framework import status
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import viewsets
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter
 from .serializers import PostSerializer,CategorySerializer
 from ...models import Post,Category
 from .permissions import IsOwnerOrReadOnly
@@ -16,8 +17,9 @@ class PostModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend,SearchFilter]
     filterset_fields = ['category', 'author']
+    search_fields = ['=title', 'content']
 
 class CategoryModelViewSet(viewsets.ModelViewSet):
     ''' getting detail of the categories ,edit and removing it'''
