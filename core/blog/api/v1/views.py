@@ -5,21 +5,10 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import viewsets
+from django_filters.rest_framework import DjangoFilterBackend
 from .serializers import PostSerializer,CategorySerializer
 from ...models import Post,Category
 from .permissions import IsOwnerOrReadOnly
-
-class PostList(ListCreateAPIView):
-    '''getting list of posts and creating post new posts'''
-    permission_classes = [IsAuthenticatedOrReadOnly]
-    serializer_class = PostSerializer
-    queryset = Post.objects.filter(status=True)
-
-class PostDetail(RetrieveUpdateDestroyAPIView):
-    ''' getting detail of the post ,edit and removing it'''
-    permission_classes = [IsAuthenticatedOrReadOnly]
-    serializer_class = PostSerializer
-    queryset = Post.objects.filter(status=True)
 
 
 class PostModelViewSet(viewsets.ModelViewSet):
@@ -27,12 +16,20 @@ class PostModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['category', 'author']
 
 class CategoryModelViewSet(viewsets.ModelViewSet):
     ''' getting detail of the categories ,edit and removing it'''
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
+
+
+
+
+
+
 '''
 from rest_framework.decorators import api_view, permission_classes
 @api_view(["GET", "POST"])
@@ -115,3 +112,14 @@ def post_detail(request, id):
         return Response({'details': 'post removed succesfully'})"""
 
 
+# class PostList(ListCreateAPIView):
+#     '''getting list of posts and creating post new posts'''
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+#     serializer_class = PostSerializer
+#     queryset = Post.objects.filter(status=True)
+
+# class PostDetail(RetrieveUpdateDestroyAPIView):
+#     ''' getting detail of the post ,edit and removing it'''
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+#     serializer_class = PostSerializer
+#     queryset = Post.objects.filter(status=True)
