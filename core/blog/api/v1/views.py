@@ -10,7 +10,7 @@ from rest_framework.filters import SearchFilter,OrderingFilter
 from .serializers import PostSerializer,CategorySerializer
 from ...models import Post,Category
 from .permissions import IsOwnerOrReadOnly
-
+from .paginations import DefaultPagination
 
 class PostModelViewSet(viewsets.ModelViewSet):
     ''' getting detail of the post ,edit and removing it'''
@@ -21,6 +21,7 @@ class PostModelViewSet(viewsets.ModelViewSet):
     filterset_fields = ['category', 'author']
     search_fields = ['=title', 'content']
     ordering_fields = ['published_date']
+    pagination_class = DefaultPagination
 
 class CategoryModelViewSet(viewsets.ModelViewSet):
     ''' getting detail of the categories ,edit and removing it'''
