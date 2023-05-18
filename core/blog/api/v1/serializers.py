@@ -36,7 +36,7 @@ class PostSerializer(serializers.ModelSerializer):
             rep.pop('relative_url', None)
             rep.pop('absolute_url', None)
         else:
-            rep.pop('context', None)
+            rep.pop('content', None)
         rep['category'] = CategorySerializer(instance.category , context = {'request':request}).data
         return rep
     
