@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from accounts.models import User
 from django.core import exceptions
+from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
 from django.utils.translation import gettext_lazy as _
 class RegistrationSerializer(serializers.ModelSerializer):
