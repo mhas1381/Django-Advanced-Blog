@@ -14,7 +14,7 @@ urlpatterns = [
     
     path('test-email' , views.TestEmailSend.as_view() , name = 'test-email'),
     #activation
-    # path('activation/confirm/')
+    path("activation/confirm/<str:token>",views.ActivationApiView.as_view(),name="activation"),
 
     #resend activation
     # path('activation/resend/')
@@ -26,7 +26,7 @@ urlpatterns = [
     #reset password
     #login and logout token
     path('token/login/' , views.CustomObtainAuthToken.as_view(),name='token-login'),
-    path('token/loout/' , views.CustomDiscardAuthToken.as_view(),name='token-logout'),
+    path('token/logout/' , views.CustomDiscardAuthToken.as_view(),name='token-logout'),
     
     #login jwt
     path('jwt/create/',views.CustomTokenObtainPairView.as_view(),name = 'jwt-create'),
