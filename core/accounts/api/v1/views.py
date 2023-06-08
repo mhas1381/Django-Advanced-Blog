@@ -11,7 +11,8 @@ from mail_templated import send_mail
 from .serializers import (RegistrationSerializer,CustomAuthTokenSerializer,
         CustomTokenObtainPairSerializer,ChangePasswordSerialier,ProfileSerializer)
 from django.contrib.auth import get_user_model
-from django.core.mail import send_mail
+from mail_templated import EmailMessage
+from ..utils import EmailThread
 from ...models import Profile
 User = get_user_model()
 
@@ -90,6 +91,9 @@ class ProfileApiView(generics.RetrieveUpdateAPIView):
 class TestEmailSend(generics.GenericAPIView):
 
     def get(self, request, *args, **kwargs):
-        message = 'hello'
-        send_mail('email/hello.tpl', message, 'admin@admin.com', ('test.ali3@gmail.com',))
+
+
+        email_obj = EmailMessage('email/hello.tpl', {'name': 'ali'}, 'admin@admin.com',to=['mhas.software@gmail.com'])
+        EmailThread(email_obj).start()
+
         return Response('email sent')
