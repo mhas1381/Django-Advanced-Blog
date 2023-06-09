@@ -15,7 +15,9 @@ from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.shortcuts import get_object_or_404
 from mail_templated import EmailMessage
+from jwt.exceptions import ExpiredSignatureError,InvalidSignatureError
 from ..utils import EmailThread
+from django.conf import settings
 from ...models import Profile
 User = get_user_model()
 

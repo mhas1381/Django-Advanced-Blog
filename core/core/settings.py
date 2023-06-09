@@ -158,10 +158,9 @@ REST_FRAMEWORK = {
 }
 
 # email configuration
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_USE_TLS = False
-EMAIL_HOST = 'smtp4dev'
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
-EMAIL_PORT = 25
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = config('')
+EMAIL_HOST_PASSWORD = 'xyyotrvzoavespzq' #past the key or password app here
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
