@@ -1,4 +1,3 @@
-
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
@@ -7,24 +6,32 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from rest_framework_simplejwt.views import TokenObtainPairView
-from mail_templated import send_mail
-from .serializers import (RegistrationSerializer,CustomAuthTokenSerializer,
-        CustomTokenObtainPairSerializer,ChangePasswordSerialier,ProfileSerializer,
-        ActivationResendSerializer)
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.shortcuts import get_object_or_404
 from mail_templated import EmailMessage
-from jwt.exceptions import ExpiredSignatureError,InvalidSignatureError
-from ..utils import EmailThread
+from jwt.exceptions import ExpiredSignatureError, InvalidSignatureError
 from django.conf import settings
+from .serializers import (
+    RegistrationSerializer,
+    CustomAuthTokenSerializer,
+    CustomTokenObtainPairSerializer,
+    ChangePasswordSerialier,
+    ProfileSerializer,
+    ActivationResendSerializer,
+)
+
+from ..utils import EmailThread
+
 from ...models import Profile
+
 User = get_user_model()
+
 
 class RegistrationApiView(generics.GenericAPIView):
     serializer_class = RegistrationSerializer
 
-    def post(self , request , *args , **kwargs):
+    def post(self, request, *args, **kwargs):
         serializer = RegistrationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -46,6 +53,7 @@ class RegistrationApiView(generics.GenericAPIView):
         refresh = RefreshToken.for_user(user)
         return str(refresh.access_token)
 
+
 class CustomObtainAuthToken(ObtainAuthToken):
     serializer_class = CustomAuthTokenSerializer
 
@@ -56,17 +64,22 @@ class CustomObtainAuthToken(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"]
         token, created = Token.objects.get_or_create(user=user)
-        return Response({"token": token.key, "user_id": user.pk, "email": user.email})
+        return Response(
+            {"token": token.key, "user_id": user.pk, "email": user.email}
+        )
+
 
 class CustomDiscardAuthToken(APIView):
     permission_classes = [IsAuthenticated]
 
-    def post(self , request):
+    def post(self, request):
         request.user.auth_token.delete()
-        return Response(status = status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
+
 
 class ChangePasswordApiView(generics.GenericAPIView):
     model = User
@@ -82,7 +95,9 @@ class ChangePasswordApiView(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             # Check old password
-            if not self.object.check_password(serializer.data.get("old_password")):
+            if not self.object.check_password(
+                serializer.data.get("old_password")
+            ):
                 return Response(
                     {"old_password": ["Wrong password."]},
                     status=status.HTTP_400_BAD_REQUEST,
@@ -95,7 +110,8 @@ class ChangePasswordApiView(generics.GenericAPIView):
                 status=status.HTTP_200_OK,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+
+
 class ProfileApiView(generics.RetrieveUpdateAPIView):
     serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
@@ -105,24 +121,33 @@ class ProfileApiView(generics.RetrieveUpdateAPIView):
         queryset = self.get_queryset()
         obj = get_object_or_404(queryset, user=self.request.user)
         return obj
-class TestEmailSend(generics.GenericAPIView):
 
+
+class TestEmailSend(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
         self.email = "mhas.software@gmail.com"
-        user_obj = get_object_or_404(User , email = self.email)
+        user_obj = get_object_or_404(User, email=self.email)
         token = self.get_tokens_for_user(user_obj)
-        email_obj = EmailMessage('email/hello.tpl', {'token': token }, 'admin@admin.com',to=[self.email])
+        email_obj = EmailMessage(
+            "email/hello.tpl",
+            {"token": token},
+            "admin@admin.com",
+            to=[self.email],
+        )
         EmailThread(email_obj).start()
-        return Response('email sent')
+        return Response("email sent")
 
-    def get_tokens_for_user(self , user):
+    def get_tokens_for_user(self, user):
         refresh = RefreshToken.for_user(user)
         return str(refresh.access_token)
+
 
 class ActivationApiView(APIView):
     def get(self, request, token, *args, **kwargs):
         try:
-            token = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+            token = jwt.decode(
+                token, settings.SECRET_KEY, algorithms=["HS256"]
+            )
             user_id = token.get("user_id")
         except ExpiredSignatureError:
             return Response(
@@ -137,11 +162,15 @@ class ActivationApiView(APIView):
         user_obj = User.objects.get(pk=user_id)
 
         if user_obj.is_verified:
-            return Response({"details": "your account has already been verified"})
+            return Response(
+                {"details": "your account has already been verified"}
+            )
         user_obj.is_verified = True
         user_obj.save()
         return Response(
-            {"details": "your account have been verified and activated successfully"}
+            {
+                "details": "your account have been verified and activated successfully"
+            }
         )
 
 
@@ -168,4 +197,3 @@ class ActivationResendApiView(generics.GenericAPIView):
     def get_tokens_for_user(self, user):
         refresh = RefreshToken.for_user(user)
         return str(refresh.access_token)
-    

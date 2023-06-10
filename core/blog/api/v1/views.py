@@ -1,40 +1,46 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import (
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly,
+)
 from rest_framework.views import APIView
 from rest_framework import status
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import (
+    ListCreateAPIView,
+    RetrieveUpdateDestroyAPIView,
+)
 from rest_framework import viewsets
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter,OrderingFilter
-from .serializers import PostSerializer,CategorySerializer
-from ...models import Post,Category
+from rest_framework.filters import SearchFilter, OrderingFilter
+from .serializers import PostSerializer, CategorySerializer
+from ...models import Post, Category
 from .permissions import IsOwnerOrReadOnly
 from .paginations import DefaultPagination
 
+
 class PostModelViewSet(viewsets.ModelViewSet):
-    ''' getting detail of the post ,edit and removing it'''
-    permission_classes = [IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly]
+    """getting detail of the post ,edit and removing it"""
+
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
-    filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
-    filterset_fields = ['category', 'author']
-    search_fields = ['title', 'content']
-    ordering_fields = ['published_date']
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ["category", "author"]
+    search_fields = ["title", "content"]
+    ordering_fields = ["published_date"]
     pagination_class = DefaultPagination
 
+
 class CategoryModelViewSet(viewsets.ModelViewSet):
-    ''' getting detail of the categories ,edit and removing it'''
+    """getting detail of the categories ,edit and removing it"""
+
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
 
 
-
-
-
-
-'''
+"""
 from rest_framework.decorators import api_view, permission_classes
 @api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
@@ -63,7 +69,7 @@ def post_detail(request, id):
     elif request.method == "DELETE":
         post.delete()
         return Response({'details':'post removed succesfully'})
-        '''
+        """
 
 
 """class PostList(APIView):
@@ -85,9 +91,6 @@ def post_detail(request, id):
         serializer.save()
         return Response(serializer.data)
 """
-
-
-
 
 
 """class PostDetail(APIView):
