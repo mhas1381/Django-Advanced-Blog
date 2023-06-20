@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "rest_framework_simplejwt",
     "mail_templated",
+    "corsheaders",
     # apps
     "accounts",
     "blog",
@@ -57,6 +58,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -165,3 +167,8 @@ EMAIL_HOST_USER = "mhas1381@gmail.com"
 EMAIL_HOST_PASSWORD = "xyyotrvzoavespzq"  # past the key or password app here
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:3000",
+]
