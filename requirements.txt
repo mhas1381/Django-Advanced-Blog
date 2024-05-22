@@ -3,7 +3,7 @@ asgiref==3.6.0
 async-timeout==4.0.2
 attrs==23.1.0
 autopep8==2.0.2
-backports.zoneinfo==0.2.1
+backports.zoneinfo;python_version<"3.9"
 billiard==4.1.0
 black==23.3.0
 celery==5.3.1
