@@ -1,6 +1,12 @@
-# 🐝 Hive Fundraiser - Backend 🐝
+# 🐝 Django Advanced Blog 🐝
+Welcome to the Blog Project! This application allows users to sign up, create, edit, and delete blog posts. The project is built using Django and includes features such as user authentication, post creation, and more.
 
-Welcome to the Hive Fundraiser backend repository. This project was created for a software testing lesson. This is where all the magic happens to support our fundraising platform.
+## Features
+
+- User registration and authentication
+- Create, edit, and delete blog posts
+- View all posts by different users
+- Responsive design
 
 ## 🚀 Getting Started
 
